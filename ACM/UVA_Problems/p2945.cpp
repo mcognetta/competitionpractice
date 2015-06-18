@@ -2,72 +2,73 @@
 
 #include <stdlib.h>
 #include <iostream>
-#include <list>
 using namespace std;
 
 int main()
 {
 	int capacity,num,b,used,waste,s;
-	char size;
-	list<int> l;
+	string size;
+	bool inserted;
 
 	while(cin >> capacity)
 	{
-		s = 0;
-		l.push_back(0);
 		cin >> num;
+		int t[num+1];
+		for(int i = 0; i < num+1; i++)
+		{
+			t[i] = 0;
+		}
+
 		for(int i = 0; i < num; i++)
 		{
 			cin >> size;
-			if(size == 'b')
+			if(size[0] == 'b')
 			{
+				cout << "size " << size << endl;
+
 				cin >> b >> s;
-				i += b;
+				cout << "b " << b << " s " << s << endl;
+				cout << "i " << i << endl;
+				i+=b;
 				for(int j = 0; j < b; j++)
 				{
-					for(list<int>::iterator it = l.begin();it != l.end(); it++)
+					for(int k = 0; k < num+1; k++)
 					{
-						if(*it+s < capacity)
+						if(t[k]+s<=capacity)
 						{
-							*it += s;
-						}
-						else
-						{
-							l.push_back(s);
+							t[k]+=s;
+							k = num+2;
 						}
 					}
-
 				}
 			}
-
 			else
 			{
-				s = (size - '0');
-				for(list<int>::iterator it = l.begin();it != l.end(); it++)
+				s = stoi(size);
+				cout << "size1 " << size << endl;
 				{
-					if(*it+size < capacity)
+					for(int k = 0; k < num+1; k++)
 					{
-						*it += s;
-					}
-					else
-					{
-						l.push_back(s);
+						if(t[k]+s<=capacity)
+						{
+							t[k]+=s;
+							k = num+2;
+						}
 					}
 				}
 			}
 		}
 		used = 0;
 		waste = 0;
-		for(list<int>::iterator it = l.begin();it != l.end(); it++)
+		for(int i = 0; i < num+1; i++)
 		{
-			cout << *it << endl;
-			waste += capacity-*it;
-			used++;
+			if(t[i] != 0)
+			{
+				used++;
+				waste += capacity-t[i];
+			}
 		}
-
 		cout << used << " " << waste << endl << endl;
-
-		l.clear();
 	}
 	return 0;
 }
